@@ -1,0 +1,63 @@
+version: "3.8"
+
+services:
+  pg:
+    image: postgres
+    hostname: db
+    environment:
+      POSTGRES_DB: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    volumes:
+      - ./config/postgresql:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    networks:
+      - summary_network
+
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: pgadmin
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@example.com
+      PGADMIN_DEFAULT_PASSWORD: admin
+    volumes:
+      - ./config/pgadmin:/var/lib/pgadmin
+    ports:
+      - "5050:80"
+    depends_on:
+      - pg
+    networks:
+      - summary_network
+
+  minio:
+    image: minio/minio
+    container_name: minio
+    environment:
+      MINIO_ACCESS_KEY: minioadmin
+      MINIO_SECRET_KEY: minioadmin
+    volumes:
+      - ./config/minio:/data
+    ports:
+      - "9000:9000"
+    command: server /data
+    networks:
+      - summary_network
+
+  createbuckets:
+    image: minio/mc
+    depends_on:
+      - minio
+    entrypoint: >
+      /bin/sh -c "
+      /usr/bin/mc alias set myminio http://minio:9000 minioadmin minioadmin;
+      /usr/bin/mc mb myminio/bucket1;
+      /usr/bin/mc policy set public myminio/bucket1;
+      exit 0;
+      "
+    networks:
+      - summary_network
+
+networks:
+  summary_network:
+    driver: bridge

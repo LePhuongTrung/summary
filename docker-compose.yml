@@ -112,6 +112,11 @@ services:
     networks:
       - summary_network
 
+  mailhog:
+    image: mailhog/mailhog
+    ports:
+      - 8025:8025
+
 networks:
   summary_network:
     driver: bridge

@@ -2,8 +2,8 @@ name: test backend
 
 on:
   push:
-    paths:
-      - "nest/**"
+    # paths:
+    #   - "nest/**"
     branches:
       - feature/*
 

@@ -112,6 +112,16 @@ services:
     networks:
       - summary_network
 
+  nest:
+    container_name: nest_summary
+    build:
+      context: .
+      dockerfile: nest/Dockerfile.dev
+    volumes:
+      - ./nest:/nest
+    ports:
+      - "3001:3001"
+
   mailhog:
     image: mailhog/mailhog
     ports:

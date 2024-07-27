@@ -122,6 +122,11 @@ services:
     ports:
       - "3001:3001"
 
+  mailhog:
+    image: mailhog/mailhog
+    ports:
+      - 8025:8025
+
 networks:
   summary_network:
     driver: bridge

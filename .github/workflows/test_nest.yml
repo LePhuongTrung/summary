@@ -1,0 +1,60 @@
+name: test backend
+
+on:
+  push:
+    paths:
+      - "nest/**"
+    branches:
+      - feature/*
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./nest
+
+    # services:
+    #   mysql:
+    #     image: mysql:8.0
+    #     env:
+    #       MYSQL_ROOT_PASSWORD: rootpassword
+    #       MYSQL_DATABASE: exampledb
+    #       MYSQL_USER: user
+    #       MYSQL_PASSWORD: password
+    #     ports:
+    #       - 3306:3306
+    #     options: --health-cmd="mysqladmin ping -h 127.0.0.1 --silent" --health-interval=10s --health-timeout=5s --health-retries=3
+    #   pg:
+    #     image: postgres
+    #     env:
+    #       POSTGRES_DB: postgres
+    #       POSTGRES_USER: postgres
+    #       POSTGRES_PASSWORD: postgres
+    #     ports:
+    #       - 5432:5432
+    #   mongodb:
+    #     image: mongo:latest
+    #     env:
+    #       MONGO_INITDB_ROOT_USERNAME: mongoadmin
+    #       MONGO_INITDB_ROOT_PASSWORD: secret
+    #     ports:
+    #       - 27017:27017
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set version node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Install dependencies
+        run: yarn install
+
+      - name: check lint
+        run: yarn lint
+
+      - name: Run tests
+        run: yarn run test:e2e

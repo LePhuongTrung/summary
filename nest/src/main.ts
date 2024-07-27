@@ -1,13 +1,16 @@
 import { ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import * as dotenv from 'dotenv';
 import { i18nValidationErrorFactory } from 'nestjs-i18n';
+dotenv.config();
 
 import { HttpExceptionFilter } from './common/exception-filters/http-exception.filter';
 import { AppModule } from './modules/app/app.module';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, { bufferLogs: true });
+  const port = process.env.PORT || 3000;
 
   const config = new DocumentBuilder()
     .setTitle('mobile-nest')
@@ -15,7 +18,7 @@ async function bootstrap() {
     .addBearerAuth()
     // if you want to add different security requirements, add addBearerAuth and add ApiBearerAuth for each endpoint
     .addSecurityRequirements('bearer')
-    .addServer('http://localhost:3000', 'local')
+    .addServer(`http://localhost:${port}`, 'local')
     .build();
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document);
@@ -29,6 +32,6 @@ async function bootstrap() {
   );
   app.useGlobalFilters(new HttpExceptionFilter());
 
-  await app.listen(3000);
+  await app.listen(port);
 }
 bootstrap();

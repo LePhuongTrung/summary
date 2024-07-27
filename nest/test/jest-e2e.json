@@ -10,9 +10,6 @@
     "@/(.*)$": "<rootDir>/src/$1",
     "@test/(.*)$": "<rootDir>/test/$1"
   },
-  "collectCoverageFrom": [
-    "<rootDir>/src/**/*.ts"
-  ],
-  "testTimeout": 20000,
-  "setupFiles": ["<rootDir>/test/set-env-vars.ts"]
+  "collectCoverageFrom": ["<rootDir>/src/**/*.ts"],
+  "testTimeout": 20000
 }

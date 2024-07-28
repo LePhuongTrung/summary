@@ -41,7 +41,7 @@ jobs:
 
       - name: Build and push Docker image
         run: |
-          cd backend
+          cd nest
           docker build -t nest-basic .
           docker tag nest-basic:latest ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.ap-northeast-1.amazonaws.com/nest-basic:latest
           docker push ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.ap-northeast-1.amazonaws.com/nest-basic:latest

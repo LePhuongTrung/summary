@@ -1,11 +1,12 @@
-name: test backend
+name: test nest
 
 on:
-  push:
+  pull_request:
     paths:
       - "nest/**"
     branches:
-      - feature/*
+      - dev
+      - main
 
 jobs:
   test:

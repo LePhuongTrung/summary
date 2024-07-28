@@ -1,4 +1,4 @@
-name: Build and Deploy BackendApp to ECS
+name: Build and Deploy basic nest to ECS
 
 on:
   push:

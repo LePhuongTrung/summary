@@ -9,6 +9,6 @@ export class AppController {
 
   @Get('/health')
   async health() {
-    return 'oke';
+    return 'ok';
   }
 }

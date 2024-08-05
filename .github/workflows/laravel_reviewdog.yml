@@ -1,0 +1,39 @@
+name: reviewdog
+
+on:
+  pull_request:
+    paths:
+      - "laravel/**"
+    branches:
+      - main
+      - dev
+
+jobs:
+  lint-and-analyse:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./laravel
+
+    steps:
+      - uses: actions/checkout@v3
+      - uses: reviewdog/action-setup@v1
+        with:
+          reviewdog_version: latest
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: "8.2"
+          tools: composer:v2
+
+      - name: Resolve dependencies
+        run: composer install --no-progress --prefer-dist --optimize-autoloader
+
+      - name: Lint
+        env:
+          REVIEWDOG_GITHUB_API_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: ./vendor/bin/phpcs --report=emacs --standard=phpcs.xml . | reviewdog -reporter=github-pr-review -efm='%f:%l:%c:%m'
+
+      - name: Run PHPStan
+        env:
+          REVIEWDOG_GITHUB_API_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: ./vendor/bin/phpstan analyse ./app --error-format=raw --no-progress --memory-limit=1G | reviewdog -reporter=github-pr-review -f=phpstan

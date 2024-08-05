@@ -1,0 +1,9 @@
+parameters:
+    paths:
+        - app
+        - database
+    level: 6
+
+includes:
+    - 'vendor/phpstan/phpstan/conf/bleedingEdge.neon'
+    - 'vendor/larastan/larastan/extension.neon'

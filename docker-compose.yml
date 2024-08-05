@@ -31,7 +31,8 @@ services:
       - summary_network
 
   mysql:
-    image: mysql:5.7
+    image: mysql:8.0
+    container_name: mysql_db
     environment:
       MYSQL_DATABASE: exampledb
       MYSQL_USER: user
@@ -47,14 +48,12 @@ services:
   phpmyadmin:
     image: phpmyadmin/phpmyadmin
     environment:
-      PMA_HOST: mysql
+      PMA_HOST: mysql_db
       PMA_USER: user
       PMA_PASSWORD: password
       PMA_ARBITRARY: 1
     ports:
       - "8080:80"
-    depends_on:
-      - mysql
     networks:
       - summary_network
 
@@ -112,6 +111,26 @@ services:
     networks:
       - summary_network
 
+  redis:
+    image: redis:latest
+    container_name: redis
+    volumes:
+      - ./config/redis:/data
+    ports:
+      - "6379:6379"
+    networks:
+      - summary_network
+
+  redis_insight:
+    image: redis/redisinsight:latest
+    container_name: redis_insight
+    ports:
+      - "8001:8001"
+    volumes:
+      - ./config/redis_insight:/data
+    networks:
+      - summary_network
+
   nest:
     container_name: nest_summary
     build:
@@ -126,6 +145,20 @@ services:
     image: mailhog/mailhog
     ports:
       - 8025:8025
+
+  laravel:
+    container_name: laravel
+    build:
+      context: .
+      dockerfile: laravel/Dockerfile.dev
+    volumes:
+      - ./laravel:/var/www
+    ports:
+      - "8081:8081"
+    environment:
+      - PORT=8081
+    networks:
+      - summary_network
 
 networks:
   summary_network:

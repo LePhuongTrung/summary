@@ -1,34 +1,34 @@
 version: "3.8"
 
 services:
-  # pg:
-  #   image: postgres
-  #   hostname: db
-  #   environment:
-  #     POSTGRES_DB: postgres
-  #     POSTGRES_USER: postgres
-  #     POSTGRES_PASSWORD: postgres
-  #   volumes:
-  #     - ./config/postgresql:/var/lib/postgresql/data
-  #   ports:
-  #     - "5432:5432"
-  #   networks:
-  #     - summary_network
+  pg:
+    image: postgres
+    hostname: db
+    environment:
+      POSTGRES_DB: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    volumes:
+      - ./config/postgresql:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    networks:
+      - summary_network
 
-  # pgadmin:
-  #   image: dpage/pgadmin4
-  #   container_name: pgadmin_summary
-  #   environment:
-  #     PGADMIN_DEFAULT_EMAIL: admin@example.com
-  #     PGADMIN_DEFAULT_PASSWORD: admin
-  #   volumes:
-  #     - ./config/pgadmin:/var/lib/pgadmin
-  #   ports:
-  #     - "5050:80"
-  #   depends_on:
-  #     - pg
-  #   networks:
-  #     - summary_network
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: pgadmin_summary
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@example.com
+      PGADMIN_DEFAULT_PASSWORD: admin
+    volumes:
+      - ./config/pgadmin:/var/lib/pgadmin
+    ports:
+      - "5050:80"
+    depends_on:
+      - pg
+    networks:
+      - summary_network
 
   mysql:
     image: mysql:8.0
@@ -57,59 +57,59 @@ services:
     networks:
       - summary_network
 
-  # mongodb:
-  #   image: mongo:latest
-  #   environment:
-  #     MONGO_INITDB_ROOT_USERNAME: mongoadmin
-  #     MONGO_INITDB_ROOT_PASSWORD: secret
-  #   volumes:
-  #     - ./config/mongodb:/data/db
-  #   ports:
-  #     - "27017:27017"
-  #   networks:
-  #     - summary_network
+  mongodb:
+    image: mongo:latest
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: mongoadmin
+      MONGO_INITDB_ROOT_PASSWORD: secret
+    volumes:
+      - ./config/mongodb:/data/db
+    ports:
+      - "27017:27017"
+    networks:
+      - summary_network
 
-  # mongo-express:
-  #   image: mongo-express
-  #   environment:
-  #     ME_CONFIG_MONGODB_ADMINUSERNAME: admin
-  #     ME_CONFIG_MONGODB_ADMINPASSWORD: pass
-  #     ME_CONFIG_MONGODB_SERVER: mongodb
-  #   ports:
-  #     - "8081:8081"
-  #   depends_on:
-  #     - mongodb
-  #   networks:
-  #     - summary_network
+  mongo-express:
+    image: mongo-express
+    environment:
+      ME_CONFIG_MONGODB_ADMINUSERNAME: admin
+      ME_CONFIG_MONGODB_ADMINPASSWORD: pass
+      ME_CONFIG_MONGODB_SERVER: mongodb
+    ports:
+      - "8081:8081"
+    depends_on:
+      - mongodb
+    networks:
+      - summary_network
 
-  # minio:
-  #   image: minio/minio
-  #   container_name: minio_summary
-  #   environment:
-  #     MINIO_ROOT_USER: minioadmin
-  #     MINIO_ROOT_PASSWORD: minioadmin
-  #   volumes:
-  #     - ./config/minio:/data
-  #   ports:
-  #     - "9001:9000"
-  #     - "9002:9002"
-  #   command: server --console-address ":9002" /data
-  #   networks:
-  #     - summary_network
+  minio:
+    image: minio/minio
+    container_name: minio_summary
+    environment:
+      MINIO_ROOT_USER: minioadmin
+      MINIO_ROOT_PASSWORD: minioadmin
+    volumes:
+      - ./config/minio:/data
+    ports:
+      - "9001:9000"
+      - "9002:9002"
+    command: server --console-address ":9002" /data
+    networks:
+      - summary_network
 
-  # createbuckets:
-  #   image: minio/mc
-  #   depends_on:
-  #     - minio
-  #   entrypoint: >
-  #     /bin/sh -c "
-  #     /usr/bin/mc alias set myminio http://minio:9000 minioadmin minioadmin;
-  #     /usr/bin/mc mb myminio/bucket1;
-  #     /usr/bin/mc policy set public myminio/bucket1;
-  #     exit 0;
-  #     "
-  #   networks:
-  #     - summary_network
+  createbuckets:
+    image: minio/mc
+    depends_on:
+      - minio
+    entrypoint: >
+      /bin/sh -c "
+      /usr/bin/mc alias set myminio http://minio:9000 minioadmin minioadmin;
+      /usr/bin/mc mb myminio/bucket1;
+      /usr/bin/mc policy set public myminio/bucket1;
+      exit 0;
+      "
+    networks:
+      - summary_network
 
   redis:
     image: redis:latest
@@ -131,15 +131,15 @@ services:
     networks:
       - summary_network
 
-  # nest:
-  #   container_name: nest_summary
-  #   build:
-  #     context: .
-  #     dockerfile: nest/Dockerfile.dev
-  #   volumes:
-  #     - ./nest:/nest
-  #   ports:
-  #     - "3001:3001"
+  nest:
+    container_name: nest_summary
+    build:
+      context: .
+      dockerfile: nest/Dockerfile.dev
+    volumes:
+      - ./nest:/nest
+    ports:
+      - "3001:3001"
 
   mailhog:
     image: mailhog/mailhog

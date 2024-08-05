@@ -7,4 +7,4 @@ WORKDIR /nuxt
 
 COPY ../nuxt/ /nuxt
 
-CMD ["tail", "-f", "/dev/null"]
+CMD bun install && bun run dev -o

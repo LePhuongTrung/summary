@@ -54,8 +54,6 @@ services:
       PMA_ARBITRARY: 1
     ports:
       - "8080:80"
-    depends_on:
-      - mysql
     networks:
       - summary_network
 
@@ -112,6 +110,26 @@ services:
   #     "
   #   networks:
   #     - summary_network
+
+  redis:
+    image: redis:latest
+    container_name: redis
+    volumes:
+      - ./config/redis:/data
+    ports:
+      - "6379:6379"
+    networks:
+      - summary_network
+
+  redis_insight:
+    image: redis/redisinsight:latest
+    container_name: redis_insight
+    ports:
+      - "8001:8001"
+    volumes:
+      - ./config/redis_insight:/data
+    networks:
+      - summary_network
 
   # nest:
   #   container_name: nest_summary

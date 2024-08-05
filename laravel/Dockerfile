@@ -1,0 +1,23 @@
+FROM php:8.2-cli
+
+WORKDIR /var/www
+
+RUN apt-get update && apt-get -y install \
+    apt-utils \
+    curl \
+    git \
+    unzip \
+    libzip-dev \
+    zip
+
+COPY ../laravel/ /var/www
+
+RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+
+ENV COMPOSER_ALLOW_SUPERUSER=1
+ENV COMPOSER_HOME=/composer
+ENV PATH="${PATH}:/composer/vendor/bin"
+
+RUN composer install --no-dev --optimize-autoloader
+
+CMD php artisan serve --host=0.0.0.0 --port=$PORT

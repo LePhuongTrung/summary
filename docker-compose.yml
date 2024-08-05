@@ -171,6 +171,8 @@ services:
       - "8002:8002"
     environment:
       - PORT=8002
+      - CHOKIDAR_USEPOLLING=true,
+      - WATCHPACK_POLLING=true
     networks:
       - summary_network
 

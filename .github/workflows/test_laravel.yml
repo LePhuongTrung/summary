@@ -12,6 +12,9 @@ jobs:
   test:
     name: phpunit test
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./laravel
 
     services:
       mysql:

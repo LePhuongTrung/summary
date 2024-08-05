@@ -160,6 +160,22 @@ services:
     networks:
       - summary_network
 
+  nuxt:
+    container_name: nuxt
+    build:
+      context: .
+      dockerfile: nuxt/Dockerfile.dev
+    volumes:
+      - ./nuxt:/nuxt
+    ports:
+      - "8002:8002"
+    environment:
+      - PORT=8002
+      - CHOKIDAR_USEPOLLING=true,
+      - WATCHPACK_POLLING=true
+    networks:
+      - summary_network
+
 networks:
   summary_network:
     driver: bridge

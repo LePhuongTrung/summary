@@ -1,0 +1,10 @@
+FROM node:20 AS base
+
+RUN curl -fsSL https://bun.sh/install | bash
+ENV PATH="/root/.bun/bin:${PATH}"
+
+WORKDIR /nuxt
+
+COPY ../nuxt/ /nuxt
+
+CMD bun install && bun run dev -o

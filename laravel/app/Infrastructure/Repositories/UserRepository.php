@@ -16,17 +16,16 @@ class UserRepository implements UserRepositoryInterface
         $this->model = $model;
     }
 
-    public function getByEmail(string $email): ?User
+    public function getByEmail(string $email): ?EloquentUser
     {
-        $user = $this->model->findByEmail($email)->first();
-        return $user ? $this->toDomain($user) : null;
+        return $this->model->findByEmail($email)->first();
     }
 
     private function toDomain(EloquentUser $user): User
     {
         return new User(
             $user->id,
-            $user->full_name,
+            $user->name,
             $user->email,
             $user->email_verified_at,
             $user->password,

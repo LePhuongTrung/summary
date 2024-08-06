@@ -2,10 +2,10 @@
 
 namespace App\Interfaces;
 
-use App\Packages\Domain\User\User;
+use App\Infrastructure\Eloquent\EloquentUser;
 use Illuminate\Support\Collection;
 
 interface UserRepositoryInterface
 {
-    public function getByEmail(string $email): ?User;
+    public function getByEmail(string $email): ?EloquentUser;
 }

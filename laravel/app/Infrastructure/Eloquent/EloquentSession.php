@@ -3,6 +3,7 @@
 namespace App\Infrastructure\Eloquent;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 /**
  * @property string $id

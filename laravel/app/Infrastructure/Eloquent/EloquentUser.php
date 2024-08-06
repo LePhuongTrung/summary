@@ -2,11 +2,8 @@
 
 namespace App\Infrastructure\Eloquent;
 
-use App\Infrastructure\Eloquent\EloquentWorkingDayOfWeek;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Laravel\Sanctum\HasApiTokens;
 
